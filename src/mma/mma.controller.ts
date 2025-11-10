@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { FighterService } from 'src/fighter/fighter.service';
+import { FighterService } from 'src/services/fighter/fighter.service';
 
 @Controller('mma')
 export class MmaController {
