@@ -1,8 +1,9 @@
 import { Controller, Get } from '@nestjs/common';
+import { FighterService } from 'src/fighter/fighter.service';
 
 @Controller('mma')
 export class MmaController {
-  constructor() {}
+  constructor(private readonly fighterService: FighterService) {}
 
   @Get()
   getMmaInfo(): string {
