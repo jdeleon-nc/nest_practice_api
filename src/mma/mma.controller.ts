@@ -12,7 +12,6 @@ export class MmaController {
 
   @Get('fighters')
   getFighters(): string[] {
-    const champions = ['Tom Aspinall, Illia Topuria, JDM, Alex Pereira'];
-    return champions;
+    return this.fighterService.getFighters();
   }
 }
