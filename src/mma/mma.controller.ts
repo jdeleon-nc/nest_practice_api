@@ -8,4 +8,10 @@ export class MmaController {
   getMmaInfo(): string {
     return 'MMA Information';
   }
+
+  @Get('fighters')
+  getFighters(): string[] {
+    const champions = ['Tom Aspinall, Illia Topuria, JDM, Alex Pereira'];
+    return champions;
+  }
 }
