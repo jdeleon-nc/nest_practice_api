@@ -5,6 +5,6 @@ import { CreateFighterDto } from './dtos/create-fighter.dto';
 
 @Module({})
 export class MmaModule {
+  classes: [MmaController];
   providers: [FighterService];
-  classes: [MmaController, CreateFighterDto];
 }
