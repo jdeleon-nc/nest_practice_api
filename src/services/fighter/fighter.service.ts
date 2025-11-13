@@ -34,15 +34,23 @@ export class FighterService {
   {
     const filePath = path.resolve(__dirname, '../../../src/db/fighters.json');
     const fileData = fs.readFile(filePath, 'utf-8');
-    const fighters = JSON.parse(await fileData);  
+    const fighters = JSON.parse(await fileData) as CreateFighterDto[];  
 
-    fighters.push(createFighterDto);
+    const lastId = fighters.sort(f => f.id).findLast(f => f.id)?.id || 0;
     
-    console.log('Updated Fighters:', fighters);
-
-
+    fighters.push(new CreateFighterDto({
+      id: lastId + 1,
+      firstName: createFighterDto.firstName,
+      lastName: createFighterDto.lastName,
+      age: createFighterDto.age
+    }) 
+  );
+    
+    const finalData = JSON.stringify(fighters, null, 2);
+    console.log('Updated Fighters:', finalData);
+    
     try {
-      fs.writeFile(filePath, JSON.stringify(fighters, null, 2));
+      fs.writeFile(filePath,  finalData);
     } catch (error) {
       console.error('Error writing to file:', error);
     }

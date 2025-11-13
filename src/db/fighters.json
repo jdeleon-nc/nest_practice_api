@@ -28,5 +28,29 @@
     "firstName": "Leon",
     "lastName": "Edwards",
     "age": 34
+  },
+  {
+    "id": 6,
+    "firstName": "Kim",
+    "lastName": "de Leon",
+    "age": 27
+  },
+  {
+    "id": 7,
+    "firstName": "Jeremy",
+    "lastName": "de Leon",
+    "age": 27
+  },
+  {
+    "id": 8,
+    "firstName": "Canelo",
+    "lastName": "Alvarez",
+    "age": 35
+  },
+  {
+    "id": 9,
+    "firstName": "Terence",
+    "lastName": "Crawford",
+    "age": 38
   }
 ]

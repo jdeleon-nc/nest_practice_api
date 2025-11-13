@@ -3,4 +3,8 @@ export class CreateFighterDto {
     firstName: string = '';
     lastName: string = '';
     age: number = 0;
+
+    constructor(partial: Partial<CreateFighterDto>) {
+        Object.assign(this, partial);
+    }
 }
