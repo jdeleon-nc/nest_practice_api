@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { FighterService } from 'src/services/fighter/fighter.service';
 import { CreateFighterDto } from './dtos/create-fighter.dto';
 
@@ -13,13 +13,17 @@ export class MmaController {
   }
 
   @Get('fighters')
-  getFighters(): string[] {
+  getFighters(): Promise<CreateFighterDto[]> {
     return this.fighterService.getFighters();
   }
 
+  @Get('fighters/:id')
+  getFighter(@Param('id') id: string): Promise<CreateFighterDto> {
+    return this.fighterService.getFighter(id);
+  }
+
   @Post('fighter')
-  addFighter(@Body() request: CreateFighterDto): CreateFighterDto {    
-    console.log('Request Body:', request);
+  addFighter(@Body() request: CreateFighterDto): Promise<CreateFighterDto> {    
     return this.fighterService.addFighter(request);
   }
 }

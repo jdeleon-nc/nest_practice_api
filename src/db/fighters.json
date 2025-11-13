@@ -1,12 +1,32 @@
 [
   {
+    "id": 1,
     "firstName": "Alexandre",
     "lastName": "Pantoja",
     "age": 35
   },
   {
+    "id": 2,
+    "firstName": "Kumaru",
+    "lastName": "Usman",
+    "age": 32
+  },
+  {
+    "id": 3,
     "firstName": "Islam",
     "lastName": "Machaev",
     "age": 32
+  },
+  {
+    "id": 4,
+    "firstName": "Daniel",
+    "lastName": "Cormier",
+    "age": 42
+  },
+  {
+    "id": 5,
+    "firstName": "Leon",
+    "lastName": "Edwards",
+    "age": 34
   }
 ]

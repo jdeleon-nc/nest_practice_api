@@ -1,26 +1,52 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { CreateFighterDto } from 'src/mma/dtos/create-fighter.dto';
-import fs from 'fs';
-import { StreamArray } from 'stream-json/streamers/StreamArray.js';
+import fs from 'fs/promises';
+import path from 'path';
 
 @Injectable()
 export class FighterService {
-  getFighters(): string[] {
-    // const streamArray = StreamArray.withParser();
-    const reader = fs.createReadStream('./src/db/fighters.json', { encoding: 'utf-8' });
-    let fighters = reader.read().toString();
-    fighters = JSON.parse(fighters);
-    return fighters;
+  async getFighters(): Promise<CreateFighterDto[]> {
+    const filePath = path.resolve(__dirname, '../../../src/db/fighters.json');
+    const data = await fs.readFile(filePath, 'utf-8');
+    
+    return JSON.parse(data);
   }
 
-  addFighter(createFighterDto: CreateFighterDto): CreateFighterDto {
-    // console.log('Adding fighter:', JSON.stringify(createFighterDto, null, 2));
-    const writer = fs.createWriteStream('./src/db/fighters.json', { flags: 'a'});
-    console.log('Writer Stream:', writer);
-    // writer.write(JSON.stringify(createFighterDto, null, 2));
+  async getFighter(id): Promise<CreateFighterDto> {
+    const filePath = path.resolve(__dirname, '../../../src/db/fighters.json');
+    const data = await fs.readFile(filePath, 'utf-8');
+    
+    const fighters = JSON.parse(data) as CreateFighterDto[];
 
-    // const fighter = { ...createFighterDto };
-    const fighter = new CreateFighterDto();
-    return fighter;
+    if(fighters && fighters.length > 0) {
+      const fighter = fighters.find(f => f.id === parseInt(id));
+
+      if(!fighter) {
+        throw new HttpException('Fighter not found', 404);  
+      }
+
+      return fighter;
+    }
+    throw new HttpException('No fighters available', 404);  
+  }
+
+  async addFighter(createFighterDto: CreateFighterDto): Promise<CreateFighterDto> 
+  {
+    const filePath = path.resolve(__dirname, '../../../src/db/fighters.json');
+    const fileData = fs.readFile(filePath, 'utf-8');
+    const fighters = JSON.parse(await fileData);  
+
+    fighters.push(createFighterDto);
+    
+    console.log('Updated Fighters:', fighters);
+
+
+    try {
+      fs.writeFile(filePath, JSON.stringify(fighters, null, 2));
+    } catch (error) {
+      console.error('Error writing to file:', error);
+    }
+
+    return createFighterDto;
   }
 }
