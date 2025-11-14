@@ -6,6 +6,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Render,
 } from '@nestjs/common';
 import { FighterService } from 'src/services/fighter/fighter.service';
 import { CreateFighterDto } from './dtos/create-fighter.dto';
@@ -15,8 +16,10 @@ export class MmaController {
   constructor(private readonly fighterService: FighterService) {}
 
   @Get()
-  getMmaInfo(): string {
-    return 'MMA Information';
+  @Render('fighters')
+  async getMmaInfo(): Promise<{ fighters: CreateFighterDto[] }> {
+    const fighters = await this.fighterService.getFighters();
+    return { fighters: fighters };
   }
 
   @Get('fighters')

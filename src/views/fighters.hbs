@@ -1,0 +1,20 @@
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <title>Fighters</title>
+  </head>
+  <body>
+    <ul>
+      <a href='/'>Home</a>
+    </ul>
+
+    <h1>MMA Fighters</h1>
+    {{#each fighters}}
+      <li>{{this.firstName}} {{this.lastName}}, Age: {{this.age}}</li>
+    {{/each}}
+    <ul>
+
+    </ul>
+  </body>
+</html>

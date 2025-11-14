@@ -8,7 +8,6 @@ export class FighterService {
   async getFighters(): Promise<CreateFighterDto[]> {
     const filePath = path.resolve(__dirname, '../../../src/db/fighters.json');
     const data = await fs.readFile(filePath, 'utf-8');
-
     return JSON.parse(data);
   }
 
