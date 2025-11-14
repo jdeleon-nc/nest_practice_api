@@ -59,4 +59,23 @@ export class FighterService {
 
     return createFighterDto;
   }
+
+  async deleteFighter(id: number): Promise<void> {
+    const filePath = path.resolve(__dirname, '../../../src/db/fighters.json');
+    const fileData = fs.readFile(filePath, 'utf-8');
+    const fighters = JSON.parse(await fileData) as CreateFighterDto[];
+
+    const index = fighters.findIndex((f) => f.id === id);
+    if (index === -1) {
+      throw new HttpException('Fighter not found', 404);
+    }
+    fighters.splice(index, 1);
+    const finalData = JSON.stringify(fighters, null, 2);
+
+    try {
+      fs.writeFile(filePath, finalData);
+    } catch (error) {
+      console.error('Error writing to file:', error);
+    }
+  }
 }

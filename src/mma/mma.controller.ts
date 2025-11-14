@@ -1,7 +1,14 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+} from '@nestjs/common';
 import { FighterService } from 'src/services/fighter/fighter.service';
 import { CreateFighterDto } from './dtos/create-fighter.dto';
-
 
 @Controller('mma')
 export class MmaController {
@@ -23,9 +30,12 @@ export class MmaController {
   }
 
   @Post('fighter')
-  addFighter(@Body() request: CreateFighterDto): Promise<CreateFighterDto> {    
+  addFighter(@Body() request: CreateFighterDto): Promise<CreateFighterDto> {
     return this.fighterService.addFighter(request);
   }
-}
 
-  
+  @Delete('fighter/:id')
+  deleteFighter(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    return this.fighterService.deleteFighter(id);
+  }
+}

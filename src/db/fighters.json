@@ -18,12 +18,6 @@
     "age": 32
   },
   {
-    "id": 4,
-    "firstName": "Daniel",
-    "lastName": "Cormier",
-    "age": 42
-  },
-  {
     "id": 5,
     "firstName": "Leon",
     "lastName": "Edwards",
@@ -51,6 +45,12 @@
     "id": 9,
     "firstName": "Terence",
     "lastName": "Crawford",
+    "age": 38
+  },
+  {
+    "id": 10,
+    "firstName": "Jon",
+    "lastName": "Jones",
     "age": 38
   }
 ]
