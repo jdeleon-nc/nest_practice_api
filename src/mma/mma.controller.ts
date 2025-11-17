@@ -22,6 +22,12 @@ export class MmaController {
     return { fighters: fighters };
   }
 
+  @Get('add-fighter')
+  @Render('add-fighter')
+  getAddFighterPage() {
+    return;
+  }
+
   @Get('fighters')
   getFighters(): Promise<CreateFighterDto[]> {
     return this.fighterService.getFighters();
