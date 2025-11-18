@@ -1,10 +1,19 @@
-export class CreateFighterDto {
-    id: number = 0;
-    firstName: string = '';
-    lastName: string = '';
-    age: number = 0;
+import { IsNumber, IsString } from 'class-validator';
 
-    constructor(partial: Partial<CreateFighterDto>) {
-        Object.assign(this, partial);
-    }
+export class CreateFighterDto {
+  @IsNumber()
+  id: number = 0;
+
+  @IsString()
+  firstName: string = '';
+
+  @IsString()
+  lastName: string = '';
+
+  @IsNumber()
+  age: number = 0;
+
+  constructor(partial: Partial<CreateFighterDto>) {
+    Object.assign(this, partial);
+  }
 }

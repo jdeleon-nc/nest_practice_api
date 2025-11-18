@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Post,
   Render,
+  ValidationPipe,
 } from '@nestjs/common';
 import { FighterService } from 'src/services/fighter/fighter.service';
 import { CreateFighterDto } from './dtos/create-fighter.dto';
@@ -39,7 +40,9 @@ export class MmaController {
   }
 
   @Post('fighter')
-  addFighter(@Body() request: CreateFighterDto): Promise<CreateFighterDto> {
+  addFighter(
+    @Body(new ValidationPipe()) request: CreateFighterDto,
+  ): Promise<CreateFighterDto> {
     return this.fighterService.addFighter(request);
   }
 
