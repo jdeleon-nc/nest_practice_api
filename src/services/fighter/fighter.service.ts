@@ -15,6 +15,8 @@ export class FighterService {
     const filePath = path.resolve(__dirname, '../../../src/db/fighters.json');
     const data = await fs.readFile(filePath, 'utf-8');
 
+    console.log(__dirname);
+
     const fighters = JSON.parse(data) as CreateFighterDto[];
 
     if (fighters && fighters.length > 0) {
