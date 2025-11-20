@@ -12,5 +12,8 @@ export class Fighter {
   lastName: string;
 
   @Column()
+  age: number;
+
+  @Column()
   weightClass: string;
 }

@@ -18,7 +18,7 @@ import { Fighter } from './mma/db/entities/fighter.entity';
       password: 'admin1',
       database: 'top_users',
       entities: [Fighter],
-      synchronize: true,
+      synchronize: false,
     }),
   ],
   controllers: [AppController],
