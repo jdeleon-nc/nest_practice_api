@@ -41,8 +41,6 @@ export class FighterService {
     if (fighters != null && fighters.length > 0) {
       const fighter = fighters.find((f) => f.id === id);
 
-      console.log(fighters, fighter, id);
-
       if (!fighter) {
         throw new HttpException('Fighter not found', 404);
       }
@@ -56,31 +54,16 @@ export class FighterService {
   async addFighter(
     createFighterDto: CreateFighterDto,
   ): Promise<CreateFighterDto> {
-    const filePath = path.resolve(__dirname, '../../../src/db/fighters.json');
-    const fileData = fs.readFile(filePath, 'utf-8');
-    const fighters = JSON.parse(await fileData) as CreateFighterDto[];
-
-    const lastId = fighters.sort((f) => f.id).findLast((f) => f.id)?.id || 0;
-
-    fighters.push(
-      new CreateFighterDto({
-        id: lastId + 1,
+    try {
+      return this.fighterRepository.save({
         firstName: createFighterDto.firstName,
         lastName: createFighterDto.lastName,
         age: createFighterDto.age,
-      }),
-    );
-
-    const finalData = JSON.stringify(fighters, null, 2);
-    console.log('Updated Fighters:', finalData);
-
-    try {
-      fs.writeFile(filePath, finalData);
+        weightClass: createFighterDto.weightClass,
+      });
     } catch (error) {
-      console.error('Error writing to file:', error);
+      throw new HttpException('Error saving fighter', 500);
     }
-
-    return createFighterDto;
   }
 
   async deleteFighter(id: number): Promise<void> {
