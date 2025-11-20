@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { FighterService } from 'src/mma/fighter/fighter.service';
+import { FighterService } from 'src/mma/services/fighter.service';
 import { MmaController } from './mma.controller';
 import { CreateFighterDto } from './dtos/create-fighter.dto';
 import { TypeOrmModule } from '@nestjs/typeorm';
