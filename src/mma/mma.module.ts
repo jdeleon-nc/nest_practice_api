@@ -3,7 +3,7 @@ import { FighterService } from 'src/mma/fighter/fighter.service';
 import { MmaController } from './mma.controller';
 import { CreateFighterDto } from './dtos/create-fighter.dto';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Fighter } from 'src/db/entities/fighter.entity';
+import { Fighter } from 'src/mma/db/entities/fighter.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Fighter])],

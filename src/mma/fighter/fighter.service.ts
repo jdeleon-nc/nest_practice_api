@@ -3,7 +3,7 @@ import { CreateFighterDto } from 'src/mma/dtos/create-fighter.dto';
 import fs from 'fs/promises';
 import path from 'path';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Fighter } from 'src/db/entities/fighter.entity';
+import { Fighter } from 'src/mma/db/entities/fighter.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
