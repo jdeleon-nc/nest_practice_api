@@ -21,7 +21,7 @@ import { Fighter } from './mma/db/entities/fighter.entity';
       synchronize: true,
     }),
   ],
-  controllers: [AppController, MmaController],
-  providers: [AppService, FighterService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
