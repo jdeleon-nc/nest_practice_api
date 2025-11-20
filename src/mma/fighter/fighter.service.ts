@@ -2,12 +2,23 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { CreateFighterDto } from 'src/mma/dtos/create-fighter.dto';
 import fs from 'fs/promises';
 import path from 'path';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Fighter } from 'src/db/entities/fighter.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class FighterService {
+  constructor(
+    @InjectRepository(Fighter) private fighterRepository: Repository<Fighter>,
+  ) {}
+
   async getFighters(): Promise<CreateFighterDto[]> {
     const filePath = path.resolve(__dirname, '../../../src/db/fighters.json');
     const data = await fs.readFile(filePath, 'utf-8');
+
+    const fighters = this.fighterRepository.find();
+    console.log(fighters);
+    //
     return JSON.parse(data);
   }
 
