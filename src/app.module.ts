@@ -5,7 +5,7 @@ import { MmaController } from './mma/mma.controller';
 import { MmaModule } from './mma/mma.module';
 import { FighterService } from './services/fighter/fighter.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Fighter } from './db/entities/fighter';
+import { Fighter } from './db/entities/fighter.entity';
 
 @Module({
   imports: [
@@ -18,7 +18,6 @@ import { Fighter } from './db/entities/fighter';
       password: 'admin1',
       database: 'top_users',
       entities: [Fighter],
-      autoLoadEntities: true,
       synchronize: true,
     }),
   ],
