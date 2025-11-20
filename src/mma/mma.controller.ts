@@ -9,7 +9,7 @@ import {
   Render,
   ValidationPipe,
 } from '@nestjs/common';
-import { FighterService } from 'src/services/fighter/fighter.service';
+import { FighterService } from 'src/mma/fighter/fighter.service';
 import { CreateFighterDto } from './dtos/create-fighter.dto';
 
 @Controller('mma')

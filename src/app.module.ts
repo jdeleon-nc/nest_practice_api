@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MmaController } from './mma/mma.controller';
 import { MmaModule } from './mma/mma.module';
-import { FighterService } from './services/fighter/fighter.service';
+import { FighterService } from './mma/fighter/fighter.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Fighter } from './db/entities/fighter.entity';
 
