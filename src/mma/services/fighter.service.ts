@@ -13,13 +13,24 @@ export class FighterService {
   ) {}
 
   async getFighters(): Promise<CreateFighterDto[]> {
-    const filePath = path.resolve(__dirname, '../../../src/db/fighters.json');
-    const data = await fs.readFile(filePath, 'utf-8');
+    const fighters = await this.fighterRepository.find({
+      select: { id: true, firstName: true, lastName: true, weightClass: true },
+    });
 
-    const fighters = this.fighterRepository.find();
-    console.log(fighters);
-    //
-    return JSON.parse(data);
+    if (fighters != null && fighters.length > 0) {
+      const dbFighters = fighters.map(
+        (f) =>
+          new CreateFighterDto({
+            id: f.id,
+            firstName: f.firstName,
+            lastName: f.lastName,
+            weightClass: f.weightClass,
+          }),
+      );
+      return dbFighters;
+    }
+
+    return [];
   }
 
   async getFighter(id): Promise<CreateFighterDto> {
