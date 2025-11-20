@@ -35,7 +35,7 @@ export class MmaController {
   }
 
   @Get('fighters/:id')
-  getFighter(@Param('id') id: string): Promise<CreateFighterDto> {
+  getFighter(@Param('id', ParseIntPipe) id: number): Promise<CreateFighterDto> {
     return this.fighterService.getFighter(id);
   }
 

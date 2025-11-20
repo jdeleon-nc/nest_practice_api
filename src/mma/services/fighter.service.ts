@@ -30,26 +30,26 @@ export class FighterService {
       return dbFighters;
     }
 
-    return [];
+    throw new HttpException('No fighters available', 404);
   }
 
-  async getFighter(id): Promise<CreateFighterDto> {
-    const filePath = path.resolve(__dirname, '../../../src/db/fighters.json');
-    const data = await fs.readFile(filePath, 'utf-8');
+  async getFighter(id: number): Promise<CreateFighterDto> {
+    const fighters = await this.fighterRepository.find({
+      select: { id: true, firstName: true, lastName: true, weightClass: true },
+    });
 
-    console.log(__dirname);
+    if (fighters != null && fighters.length > 0) {
+      const fighter = fighters.find((f) => f.id === id);
 
-    const fighters = JSON.parse(data) as CreateFighterDto[];
-
-    if (fighters && fighters.length > 0) {
-      const fighter = fighters.find((f) => f.id === parseInt(id));
+      console.log(fighters, fighter, id);
 
       if (!fighter) {
         throw new HttpException('Fighter not found', 404);
       }
 
-      return fighter;
+      return fighter as CreateFighterDto;
     }
+
     throw new HttpException('No fighters available', 404);
   }
 
