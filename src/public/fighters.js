@@ -6,10 +6,15 @@ document.addEventListener('DOMContentLoaded', () => {
     event.preventDefault();
 
     const formData = Object.fromEntries(new FormData(fighterForm).entries());
+
+    const jsonData = JSON.stringify(formData);
+
+    const request = new CreateFighterRequestDto();
+    Object.assign(request, JSON.parse(jsonData));
     const response = await fetch('/mma/fighter', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData),
+      body: request,
     });
 
     if (response.ok) {
