@@ -10,7 +10,8 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { FighterService } from 'src/mma/services/fighter.service';
-import { CreateFighterDto } from './dtos/create-fighter.dto';
+import { CreateFighterResponseDto } from './dtos/create-fighter-response.dto';
+import { CreateFighterRequestDto } from './dtos/create-fighter-request.dto';
 
 @Controller('mma')
 export class MmaController {
@@ -18,7 +19,7 @@ export class MmaController {
 
   @Get()
   @Render('fighters')
-  async getMmaInfo(): Promise<{ fighters: CreateFighterDto[] }> {
+  async getMmaInfo(): Promise<{ fighters: CreateFighterResponseDto[] }> {
     const fighters = await this.fighterService.getFighters();
     return { fighters: fighters };
   }
@@ -30,19 +31,21 @@ export class MmaController {
   }
 
   @Get('fighters')
-  getFighters(): Promise<CreateFighterDto[]> {
+  getFighters(): Promise<CreateFighterResponseDto[]> {
     return this.fighterService.getFighters();
   }
 
   @Get('fighters/:id')
-  getFighter(@Param('id', ParseIntPipe) id: number): Promise<CreateFighterDto> {
+  getFighter(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<CreateFighterResponseDto> {
     return this.fighterService.getFighter(id);
   }
 
   @Post('fighter')
   addFighter(
-    @Body(new ValidationPipe()) request: CreateFighterDto,
-  ): Promise<CreateFighterDto> {
+    @Body(new ValidationPipe()) request: CreateFighterRequestDto,
+  ): Promise<CreateFighterResponseDto> {
     return this.fighterService.addFighter(request);
   }
 

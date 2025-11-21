@@ -1,8 +1,10 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { CreateFighterDto } from 'src/mma/dtos/create-fighter.dto';
+
 import { InjectRepository } from '@nestjs/typeorm';
 import { Fighter } from 'src/mma/db/entities/fighter.entity';
 import { Repository } from 'typeorm';
+import { CreateFighterResponseDto } from '../dtos/create-fighter-response.dto';
+import { CreateFighterRequestDto } from '../dtos/create-fighter-request.dto';
 
 @Injectable()
 export class FighterService {
@@ -10,16 +12,16 @@ export class FighterService {
     @InjectRepository(Fighter) private fighterRepository: Repository<Fighter>,
   ) {}
 
-  async getFighters(): Promise<CreateFighterDto[]> {
+  async getFighters(): Promise<CreateFighterResponseDto[]> {
     const fighters = await this.fighterRepository.find({
       select: { id: true, firstName: true, lastName: true, weightClass: true },
     });
 
-    const dbFighters = fighters.map((f) => new CreateFighterDto(f));
+    const dbFighters = fighters.map((f) => new CreateFighterResponseDto(f));
     return dbFighters;
   }
 
-  async getFighter(id: number): Promise<CreateFighterDto> {
+  async getFighter(id: number): Promise<CreateFighterResponseDto> {
     const fighter = await this.fighterRepository.findOne({
       where: { id: id },
       select: { id: true, firstName: true, lastName: true, weightClass: true },
@@ -29,15 +31,17 @@ export class FighterService {
       throw new HttpException('Fighter not found', 404);
     }
 
-    return new CreateFighterDto(fighter);
+    return new CreateFighterResponseDto(fighter);
   }
 
   async addFighter(
-    createFighterDto: CreateFighterDto,
-  ): Promise<CreateFighterDto> {
+    createFighterRequestDto: CreateFighterRequestDto,
+  ): Promise<CreateFighterResponseDto> {
     try {
-      const savedFighter = await this.fighterRepository.save(createFighterDto);
-      return new CreateFighterDto(savedFighter);
+      const savedFighter = await this.fighterRepository.save(
+        createFighterRequestDto,
+      );
+      return new CreateFighterResponseDto(savedFighter);
     } catch (error) {
       throw new HttpException('Error saving fighter', 500);
     }

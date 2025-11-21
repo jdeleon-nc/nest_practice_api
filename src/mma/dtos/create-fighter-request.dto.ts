@@ -1,6 +1,6 @@
 import { IsNumber, IsString } from 'class-validator';
 
-export class CreateFighterDto {
+export class CreateFighterRequestDto {
   @IsNumber()
   id: number = 0;
 
@@ -16,7 +16,7 @@ export class CreateFighterDto {
   @IsString()
   weightClass: string = '';
 
-  constructor(partial: Partial<CreateFighterDto>) {
+  constructor(partial: Partial<CreateFighterRequestDto>) {
     Object.assign(this, partial);
   }
 }
