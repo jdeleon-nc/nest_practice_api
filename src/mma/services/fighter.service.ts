@@ -1,7 +1,5 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { CreateFighterDto } from 'src/mma/dtos/create-fighter.dto';
-import fs from 'fs/promises';
-import path from 'path';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Fighter } from 'src/mma/db/entities/fighter.entity';
 import { Repository } from 'typeorm';
@@ -17,71 +15,42 @@ export class FighterService {
       select: { id: true, firstName: true, lastName: true, weightClass: true },
     });
 
-    if (fighters != null && fighters.length > 0) {
-      const dbFighters = fighters.map(
-        (f) =>
-          new CreateFighterDto({
-            id: f.id,
-            firstName: f.firstName,
-            lastName: f.lastName,
-            weightClass: f.weightClass,
-          }),
-      );
-      return dbFighters;
-    }
-
-    throw new HttpException('No fighters available', 404);
+    const dbFighters = fighters.map((f) => new CreateFighterDto(f));
+    return dbFighters;
   }
 
   async getFighter(id: number): Promise<CreateFighterDto> {
-    const fighters = await this.fighterRepository.find({
+    const fighter = await this.fighterRepository.findOne({
+      where: { id: id },
       select: { id: true, firstName: true, lastName: true, weightClass: true },
     });
 
-    if (fighters != null && fighters.length > 0) {
-      const fighter = fighters.find((f) => f.id === id);
-
-      if (!fighter) {
-        throw new HttpException('Fighter not found', 404);
-      }
-
-      return fighter as CreateFighterDto;
+    if (!fighter) {
+      throw new HttpException('Fighter not found', 404);
     }
 
-    throw new HttpException('No fighters available', 404);
+    return new CreateFighterDto(fighter);
   }
 
   async addFighter(
     createFighterDto: CreateFighterDto,
   ): Promise<CreateFighterDto> {
     try {
-      return this.fighterRepository.save({
-        firstName: createFighterDto.firstName,
-        lastName: createFighterDto.lastName,
-        age: createFighterDto.age,
-        weightClass: createFighterDto.weightClass,
-      });
+      const savedFighter = await this.fighterRepository.save(createFighterDto);
+      return new CreateFighterDto(savedFighter);
     } catch (error) {
       throw new HttpException('Error saving fighter', 500);
     }
   }
 
   async deleteFighter(id: number): Promise<void> {
-    const filePath = path.resolve(__dirname, '../../../src/db/fighters.json');
-    const fileData = fs.readFile(filePath, 'utf-8');
-    const fighters = JSON.parse(await fileData) as CreateFighterDto[];
-
-    const index = fighters.findIndex((f) => f.id === id);
-    if (index === -1) {
-      throw new HttpException('Fighter not found', 404);
-    }
-    fighters.splice(index, 1);
-    const finalData = JSON.stringify(fighters, null, 2);
-
     try {
-      fs.writeFile(filePath, finalData);
+      const result = await this.fighterRepository.delete(id);
+      if (result.affected === 0) {
+        throw new HttpException('Fighter not found', 404);
+      }
     } catch (error) {
-      console.error('Error writing to file:', error);
+      throw new HttpException('Error deleting fighter', 500);
     }
   }
 }
