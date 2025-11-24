@@ -3,7 +3,7 @@ export class CreateFighterResponseDto {
   firstName: string = '';
   lastName: string = '';
   age: number = 0;
-  weightClass: string = '';
+  weightClassId: number = 0;
 
   constructor(partial: Partial<CreateFighterResponseDto>) {
     Object.assign(this, partial);

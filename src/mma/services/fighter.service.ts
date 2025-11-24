@@ -16,18 +16,32 @@ export class FighterService {
   ) {}
 
   async getFighters(): Promise<CreateFighterResponseDto[]> {
-    const fighters = await this.fighterRepository.find({
-      select: { id: true, firstName: true, lastName: true, weightClass: true },
+    const fighters = await this.prismaService.fighter.findMany({
+      select: {
+        id: true,
+        firstName: true,
+        lastName: true,
+        age: true,
+        weightClass: true,
+      },
     });
 
-    const dbFighters = fighters.map((f) => new CreateFighterResponseDto(f));
-    return dbFighters;
+    const response = fighters.map(
+      (f) =>
+        new CreateFighterResponseDto({
+          firstName: f.firstName,
+          lastName: f.lastName,
+          age: f.age,
+          id: f.id,
+          weightClassId: f.weightClass.id,
+        }),
+    );
+    return response;
   }
 
   async getFighter(id: number): Promise<CreateFighterResponseDto> {
-    const fighter = await this.fighterRepository.findOne({
+    const fighter = await this.prismaService.fighter.findUnique({
       where: { id: id },
-      select: { id: true, firstName: true, lastName: true, weightClass: true },
     });
 
     if (!fighter) {
@@ -54,17 +68,15 @@ export class FighterService {
 
       return new CreateFighterResponseDto(savedFighter);
     } catch (error) {
-      console.error(error);
       throw new HttpException('Error saving fighter', 500);
     }
   }
 
   async deleteFighter(id: number): Promise<void> {
     try {
-      const result = await this.fighterRepository.delete(id);
-      if (result.affected === 0) {
-        throw new HttpException('Fighter not found', 404);
-      }
+      await this.prismaService.fighter.delete({
+        where: { id: id },
+      });
     } catch (error) {
       throw new HttpException('Error deleting fighter', 500);
     }
