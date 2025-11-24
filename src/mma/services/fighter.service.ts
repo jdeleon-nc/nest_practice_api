@@ -5,11 +5,14 @@ import { Fighter } from 'src/mma/db/entities/fighter.entity';
 import { Repository } from 'typeorm';
 import { CreateFighterResponseDto } from '../dtos/create-fighter-response.dto';
 import { CreateFighterRequestDto } from '../dtos/create-fighter-request.dto';
+import { PrismaService } from './prisma-service';
+import { create } from 'domain';
 
 @Injectable()
 export class FighterService {
   constructor(
     @InjectRepository(Fighter) private fighterRepository: Repository<Fighter>,
+    private prismaService: PrismaService,
   ) {}
 
   async getFighters(): Promise<CreateFighterResponseDto[]> {
@@ -38,11 +41,20 @@ export class FighterService {
     createFighterRequestDto: CreateFighterRequestDto,
   ): Promise<CreateFighterResponseDto> {
     try {
-      const savedFighter = await this.fighterRepository.save(
-        createFighterRequestDto,
-      );
+      const savedFighter = await this.prismaService.fighter.create({
+        data: {
+          firstName: createFighterRequestDto.firstName,
+          lastName: createFighterRequestDto.lastName,
+          age: createFighterRequestDto.age,
+          weightClass: {
+            connect: { id: createFighterRequestDto.weightClassId },
+          },
+        },
+      });
+
       return new CreateFighterResponseDto(savedFighter);
     } catch (error) {
+      console.error(error);
       throw new HttpException('Error saving fighter', 500);
     }
   }

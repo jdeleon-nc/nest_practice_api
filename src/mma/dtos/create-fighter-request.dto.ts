@@ -13,8 +13,8 @@ export class CreateFighterRequestDto {
   @IsNumber()
   age: number = 0;
 
-  @IsString()
-  weightClass: string = '';
+  @IsNumber()
+  weightClassId: number = 0;
 
   constructor(partial: Partial<CreateFighterRequestDto>) {
     Object.assign(this, partial);

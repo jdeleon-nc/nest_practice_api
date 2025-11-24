@@ -16,7 +16,7 @@ import { ConfigModule } from '@nestjs/config';
       port: 5432,
       username: 'postgres',
       password: 'admin1',
-      database: 'top_users',
+      database: 'lwfc_dev',
       entities: [Fighter],
       synchronize: false,
     }),
