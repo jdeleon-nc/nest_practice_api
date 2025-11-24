@@ -1,9 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { MmaController } from './mma/mma.controller';
 import { MmaModule } from './mma/mma.module';
-import { FighterService } from './mma/services/fighter.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Fighter } from './mma/db/entities/fighter.entity';
 
