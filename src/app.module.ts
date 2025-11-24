@@ -4,10 +4,12 @@ import { AppService } from './app.service';
 import { MmaModule } from './mma/mma.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Fighter } from './mma/db/entities/fighter.entity';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
     MmaModule,
+    ConfigModule.forRoot({}),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
